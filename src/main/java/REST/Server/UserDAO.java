@@ -12,65 +12,48 @@ import java.util.ArrayList;
 @WebService
 public class UserDAO implements IUser {
 
-    private static ArrayList<User> userList = new ArrayList<User>();
+    private static ArrayList<User> userList = new ArrayList<>();
 
-    public UserDAO() {
-
-    }
+    public UserDAO() {}
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<User> alleBrugere() {
-        Connection c = null;
-        Statement s = null;
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
-            c.setAutoCommit(false);
-
-            s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger;");
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String username = rs.getString("brugernavn");
-                String password = rs.getString("kode");
-                userList.add(new User(id,username,password));
-            }
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+    public ArrayList<User> allUsers() {
+        CallDatabase callDatabase = new CallDatabase();
+        userList = callDatabase.getUser();
         return userList;
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public User opretBruger(User brugerData) {
-        String email = brugerData.getEmail();
-        String password = brugerData.getPassword();
-        int id = userList.size();
-        User user = new User(id, email, password);
-        userList.add(user);
+    @Produces(MediaType.APPLICATION_JSON)
+    public User createUser(User brugerData) {
+        CallDatabase callDatabase = new CallDatabase();
+        userList = callDatabase.getUser();
+        int id = userList.size() + 1;
+        User user = new User(id, brugerData.getBrugernavn(),brugerData.getPassword());
+        callDatabase.postUser(user);
         return user;
     }
 
     @GET
-    @Path("validate/{id}")
+    @Path("/validate/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User validereBruger(@PathParam("id") String email, String password) {
+    public User validereBruger(@PathParam("id") String brugernavn, String password) {
         for(User user: userList) {
-            if (user.getPassword().equals(password) && user.getEmail().equals(email))
+            if (user.getPassword().equals(password) && user.getBrugernavn().equals(brugernavn))
                 return user;
         }
         return null;
     }
 
+
     @PUT
-    @Path("changePW/{id}")
-    public void skiftePassword(@PathParam("id") int id, String password) {
-        userList.get(id).setPassword(password);
+    @Path("/changePW/{id}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void changePassword(@PathParam("id") int id, String password) {
+        CallDatabase callDatabase = new CallDatabase();
+        callDatabase.putPassword(id,password);
     }
 
     @GET
@@ -82,8 +65,8 @@ public class UserDAO implements IUser {
     }
 
     @DELETE
-    @Path("{id}")
-    public void sletteBruger(@PathParam("id") int id) {
+    @Path("/{id}")
+    public void deleteUser(@PathParam("id") int id) {
         User user = read(id);
         userList.remove(user);
     }

@@ -9,17 +9,17 @@ import javax.jws.soap.SOAPBinding;
 public interface IUser {
 
     @WebMethod
-    User opretBruger(User brugerData);
+    User createUser(User brugerData);
 
     @WebMethod
-    User validereBruger(String email, String password);
+    User validereBruger(String brugernavn, String password);
 
     @WebMethod
-    void skiftePassword(int id, String password);
+    void changePassword(int id, String password);
 
     @WebMethod
     User read(int id);
 
     @WebMethod
-    void sletteBruger(int id);
+    void deleteUser(int id);
 }

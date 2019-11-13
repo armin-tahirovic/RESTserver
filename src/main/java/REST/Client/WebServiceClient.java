@@ -35,7 +35,7 @@ public class WebServiceClient {
         }
 
         UserDAO userDAO = new UserDAO();
-        target.path("users").request(MediaType.APPLICATION_JSON).post(Entity.json(userDAO.alleBrugere()));
+        target.path("users").request(MediaType.APPLICATION_JSON).post(Entity.json(userDAO.allUsers()));
         allUsers = target.path("users").request().accept(MediaType.APPLICATION_JSON).get(userArrayListType);
         for (User userList2: allUsers) {
             System.out.println(userList2.toString());
