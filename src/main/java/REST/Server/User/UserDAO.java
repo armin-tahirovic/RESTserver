@@ -1,10 +1,8 @@
-package REST.Server;
+package REST.Server.User;
 
 import javax.jws.WebService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -25,10 +23,10 @@ public class UserDAO implements IUser {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User createUser(User brugerData) {
+    public User createUser(User userData) {
         ArrayList<User> userList = callDatabase.getUser();
         int id = userList.size();
-        User user = new User(id, brugerData.getBrugernavn(),brugerData.getPassword());
+        User user = new User(id, userData.getBrugernavn(),userData.getPassword());
         callDatabase.postUser(user);
         return user;
     }

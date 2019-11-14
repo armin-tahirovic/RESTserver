@@ -1,4 +1,4 @@
-package REST.Server;
+package REST.Server.User;
 
 import java.util.Objects;
 

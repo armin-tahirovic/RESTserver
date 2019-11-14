@@ -1,4 +1,4 @@
-package REST.Server;
+package REST.Server.Friend;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -6,19 +6,13 @@ import javax.jws.soap.SOAPBinding;
 
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL)
-public interface IUser {
+public interface IFriend {
 
     @WebMethod
-    User createUser(User brugerData);
-
-/*    @WebMethod
-    User validereBruger(String brugernavn, String password);*/
+    Friend addFriend(Friend friendData);
 
     @WebMethod
-    void changePassword(int id, String password);
-
-    @WebMethod
-    User read(int id);
+    Friend read(int id);
 
     @WebMethod
     void delete(int id);

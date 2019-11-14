@@ -1,5 +1,7 @@
 package REST.Server;
 
+import REST.Server.User.UserDAO;
+
 import javax.xml.ws.Endpoint;
 
 public class UserPublisher {

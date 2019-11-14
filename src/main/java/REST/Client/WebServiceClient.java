@@ -1,7 +1,7 @@
 package REST.Client;
 
-import REST.Server.User;
-import REST.Server.UserDAO;
+import REST.Server.User.User;
+import REST.Server.User.UserDAO;
 import org.glassfish.jersey.client.ClientConfig;
 
 import javax.ws.rs.client.Client;

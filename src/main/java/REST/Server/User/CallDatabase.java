@@ -1,4 +1,4 @@
-package REST.Server;
+package REST.Server.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class CallDatabase {
         return users;
     }
 
-    public User postUser(User brugerdata) {
+    public User postUser(User userdata) {
         Connection c = null;
         Statement s = null;
 
@@ -49,14 +49,13 @@ public class CallDatabase {
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
 
             s = c.createStatement();
-            System.out.println(brugerdata.getId()+brugerdata.getBrugernavn()+brugerdata.getPassword());
-            String createUserSQL = "INSERT INTO \"poc\".bruger VALUES ('"+ brugerdata.getId() +"', '"+ brugerdata.getBrugernavn() +"', '"+ brugerdata.getPassword() +"');";
+            String createUserSQL = "INSERT INTO \"poc\".bruger VALUES ('"+ userdata.getId() +"', '"+ userdata.getBrugernavn() +"', '"+ userdata.getPassword() +"');";
             s.executeQuery(createUserSQL);
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        return new User(brugerdata.getId(), brugerdata.getBrugernavn(), brugerdata.getPassword());
+        return new User(userdata.getId(), userdata.getBrugernavn(), userdata.getPassword());
     }
 
     public void putPassword(int id, String password) {
