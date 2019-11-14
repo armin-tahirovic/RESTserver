@@ -12,31 +12,28 @@ import java.util.ArrayList;
 @WebService
 public class UserDAO implements IUser {
 
-    private static ArrayList<User> userList = new ArrayList<>();
+    private CallDatabase callDatabase = CallDatabase.CallDB();
 
     public UserDAO() {}
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<User> allUsers() {
-        CallDatabase callDatabase = new CallDatabase();
-        userList = callDatabase.getUser();
-        return userList;
+        return callDatabase.getUser();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public User createUser(User brugerData) {
-        CallDatabase callDatabase = new CallDatabase();
-        userList = callDatabase.getUser();
-        int id = userList.size() + 1;
+        ArrayList<User> userList = callDatabase.getUser();
+        int id = userList.size();
         User user = new User(id, brugerData.getBrugernavn(),brugerData.getPassword());
         callDatabase.postUser(user);
         return user;
     }
 
-    @GET
+/*    @GET
     @Path("/validate/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public User validereBruger(@PathParam("id") String brugernavn, String password) {
@@ -45,14 +42,13 @@ public class UserDAO implements IUser {
                 return user;
         }
         return null;
-    }
+    }*/
 
 
     @PUT
     @Path("/changePW/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
     public void changePassword(@PathParam("id") int id, String password) {
-        CallDatabase callDatabase = new CallDatabase();
         callDatabase.putPassword(id,password);
     }
 
@@ -61,13 +57,12 @@ public class UserDAO implements IUser {
     @Produces(MediaType.APPLICATION_JSON)
     public User read(@PathParam("id") int id)
     {
-        return userList.get(id);
+        return callDatabase.getOneUser(id);
     }
 
     @DELETE
-    @Path("/{id}")
-    public void deleteUser(@PathParam("id") int id) {
-        User user = read(id);
-        userList.remove(user);
+    @Path("{id}")
+    public void delete(@PathParam("id") int id) {
+        callDatabase.deleteUser(id);
     }
 }

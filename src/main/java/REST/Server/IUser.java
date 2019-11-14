@@ -11,8 +11,8 @@ public interface IUser {
     @WebMethod
     User createUser(User brugerData);
 
-    @WebMethod
-    User validereBruger(String brugernavn, String password);
+/*    @WebMethod
+    User validereBruger(String brugernavn, String password);*/
 
     @WebMethod
     void changePassword(int id, String password);
@@ -21,5 +21,5 @@ public interface IUser {
     User read(int id);
 
     @WebMethod
-    void deleteUser(int id);
+    void delete(int id);
 }

@@ -5,6 +5,16 @@ import java.util.ArrayList;
 
 public class CallDatabase {
 
+    private CallDatabase() {
+    }
+    private static CallDatabase callDatabase = null;
+    public static CallDatabase CallDB() {
+        if (callDatabase == null) {
+            callDatabase = new CallDatabase();
+        }
+        return callDatabase;
+    }
+
     public ArrayList<User> getUser() {
         ArrayList<User> users = new ArrayList<>();
         Connection c = null;
@@ -13,7 +23,6 @@ public class CallDatabase {
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
-            c.setAutoCommit(false);
 
             s = c.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger;");
@@ -23,7 +32,6 @@ public class CallDatabase {
                 String username = rs.getString("brugernavn");
                 String password = rs.getString("kode");
                 users.add(new User(ID,username,password));
-
             }
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -63,6 +71,47 @@ public class CallDatabase {
             System.out.println(id + password);
             String createUserSQL = "UPDATE \"poc\".bruger set kode = '"+ password +"' where id = '"+ id +"'";
             s.executeQuery(createUserSQL);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public User getOneUser(int id) {
+        Connection c = null;
+        Statement s = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
+
+            s = c.createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger WHERE id = '"+ id +"';");
+
+            while (rs.next()) {
+                    int ID = rs.getInt("id");
+                    String username = rs.getString("brugernavn");
+                    String password = rs.getString("kode");
+                    User user = new User(ID, username, password);
+                    return user;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void deleteUser(int id) {
+        Connection c = null;
+        Statement s = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
+
+            s = c.createStatement();
+            String rs = "DELETE FROM \"poc\".bruger WHERE id = '"+ id +"';";
+            s.executeQuery(rs);
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
