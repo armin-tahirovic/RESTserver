@@ -32,7 +32,7 @@ public class CallingWebservice {
         ArrayList<String> allNames = new ArrayList<>();
         for (Friend userList1 : allUsers) {
             System.out.println(userList1.toString());
-            allNames.add(userList1.getBrugernavn());
+            allNames.add(userList1.getUsername());
         }
         return allNames;
     }
