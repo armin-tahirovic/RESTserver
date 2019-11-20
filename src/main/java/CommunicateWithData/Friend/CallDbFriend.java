@@ -15,7 +15,7 @@ public class CallDbFriend {
         return callDbFriend;
     }
 
-    public ArrayList<Friend> getFriend() {
+    public ArrayList<Friend> getFriend(String owner) {
         ArrayList<Friend> friends = new ArrayList<>();
         Connection c = null;
         Statement s = null;
@@ -25,12 +25,11 @@ public class CallDbFriend {
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
 
             s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".venner;");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".'"+ owner +"';");
 
             while (rs.next()) {
-                int ID = rs.getInt("id");
                 String username = rs.getString("brugernavn");
-                friends.add(new Friend(ID,username));
+                friends.add(new Friend(username));
             }
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -39,7 +38,7 @@ public class CallDbFriend {
         return friends;
     }
 
-    public Friend postFriend(Friend friendData) {
+    public void postFriend(String owner, String username) {
         Connection c = null;
         Statement s = null;
 
@@ -48,16 +47,15 @@ public class CallDbFriend {
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
 
             s = c.createStatement();
-            String createUserSQL = "INSERT INTO \"poc\".venner VALUES ('"+ friendData.getId() +"', '"+ friendData.getBrugernavn() +"');";
+            String createUserSQL = "INSERT INTO \"poc\".'"+ owner +"' VALUES ( '"+ username +"');";
             s.executeQuery(createUserSQL);
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        return new Friend(friendData.getId(), friendData.getBrugernavn());
     }
 
-    public Friend getOneFriend(int id) {
+    public Friend getOneFriend(String owner, String username) {
         Connection c = null;
         Statement s = null;
 
@@ -66,12 +64,11 @@ public class CallDbFriend {
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
 
             s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".venner WHERE id = '"+ id +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".'"+ owner +"' WHERE username = '"+ username +"';");
 
             while (rs.next()) {
-                int ID = rs.getInt("id");
-                String username = rs.getString("brugernavn");
-                Friend friend = new Friend(ID, username);
+                String usernameDB = rs.getString("brugernavn");
+                Friend friend = new Friend(usernameDB);
                 return friend;
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -80,7 +77,7 @@ public class CallDbFriend {
         return null;
     }
 
-    public void deleteFriend(int id) {
+    public void deleteFriend(String owner, String username) {
         Connection c = null;
         Statement s = null;
 
@@ -89,7 +86,7 @@ public class CallDbFriend {
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
 
             s = c.createStatement();
-            String rs = "DELETE FROM \"poc\".venner WHERE id = '"+ id +"';";
+            String rs = "DELETE FROM \"poc\".'"+ owner +"' WHERE username = '"+ username +"';";
             s.executeQuery(rs);
 
         } catch (ClassNotFoundException | SQLException e) {

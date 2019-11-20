@@ -1,5 +1,7 @@
 package CommunicateWithData.Friend;
 
+import CommunicateWithData.User.User;
+
 import javax.jws.WebService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,31 +19,20 @@ public class FriendDAO implements IFriend {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Friend> allUsers() {
-        return callDbFriend.getFriend();
+    public ArrayList<Friend> allFriends(String owner) {
+        return callDbFriend.getFriend(owner);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Friend addFriend(Friend friendData) {
-        ArrayList<Friend> userList = callDbFriend.getFriend();
-        int id = userList.size();
-        Friend friend = new Friend(id, friendData.getBrugernavn());
-        callDbFriend.postFriend(friend);
-        return friend;
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Friend read(@PathParam("id") int id) {
-        return callDbFriend.getOneFriend(id);
+    @Path("{owner}")
+    public void addFriend(@PathParam("owner")String owner,Friend friendData) {
+        callDbFriend.postFriend(owner, friendData.getUsername());
     }
 
     @DELETE
-    @Path("{id}")
-    public void delete(@PathParam("id") int id) {
-        callDbFriend.deleteFriend(id);
+    @Path("{username}")
+    public void delete(@PathParam("username") String username, String owner) {
+        callDbFriend.deleteFriend(owner, username);
     }
 }

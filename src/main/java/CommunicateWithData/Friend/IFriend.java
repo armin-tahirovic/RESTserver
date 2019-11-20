@@ -1,5 +1,6 @@
 package CommunicateWithData.Friend;
 
+import CommunicateWithData.User.User;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -9,11 +10,8 @@ import javax.jws.soap.SOAPBinding;
 public interface IFriend {
 
     @WebMethod
-    Friend addFriend(Friend friendData);
+    void addFriend(String username, Friend friendData);
 
     @WebMethod
-    Friend read(int id);
-
-    @WebMethod
-    void delete(int id);
+    void delete(String username, String owner);
 }

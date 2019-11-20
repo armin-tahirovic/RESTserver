@@ -4,30 +4,20 @@ import java.util.Objects;
 
 public class Friend {
 
-    private int id;
-    private String brugernavn;
+    private String username;
 
     public Friend(){}
 
-    public Friend(int id, String brugernavn) {
-        this.id = id;
-        this.brugernavn = brugernavn;
+    public Friend(String username) {
+        this.username = username;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getBrugernavn() {
-        return brugernavn;
-    }
-
-    public void setBrugernavn(String brugernavn) {
-        this.brugernavn = brugernavn;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -35,19 +25,17 @@ public class Friend {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Friend friend = (Friend) o;
-        return id == friend.id &&
-                Objects.equals(brugernavn, friend.brugernavn);
+        return Objects.equals(username, friend.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brugernavn);
+        return Objects.hash(username);
     }
 
     @Override
     public String toString() {
-        return  "id: " + id +
-                "   brugernavn: '" + brugernavn +
+        return  "   brugernavn: '" + username +
                 '\n';
     }
 }
