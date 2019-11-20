@@ -1,5 +1,8 @@
-package JavaCommunication;
+package CommunikateWithClient;
 
+import CommunicateWithData.CallingDatabase;
+
+import CommunicateWithData.CallingWebservice;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -43,10 +46,15 @@ public class CommunikateClient implements Runnable {
                     byte[] b = message.getBytes();
                     outToClient.write(b);
 
-                } else {
-                    CallingDatabase database = new CallingDatabase();
+                   // CommunikateWithClient.CommunicateToAll all = new CommunikateWithClient.CommunicateToAll();
+                   // all.talkToAll(message);
 
-                    ArrayList<String> venner = database.GetVenner();
+                } else {
+                    CallingWebservice database = new CallingWebservice();
+                    System.out.println("made webservice");
+
+                    ArrayList<String> venner = database.getAllUsers();
+                    System.out.println("Venner listen: " + venner);
                     testingJson.put("data", venner);
                     String message = testingJson.toJSONString();
                     byte[] b = message.getBytes();
@@ -56,6 +64,7 @@ public class CommunikateClient implements Runnable {
             }
 
         } catch (Exception e){
+            e.printStackTrace();
             System.out.println("Client disconnected");
         }
     }

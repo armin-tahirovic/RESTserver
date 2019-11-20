@@ -1,4 +1,4 @@
-package REST.Server.User;
+package CommunicateWithData.User;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;

@@ -1,4 +1,7 @@
-package JavaCommunication;
+package CommunicateWithData;
+
+import Server.Ven;
+
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package JavaCommunication;
+package CommunicateWithData;
 
 import java.sql.*;
 import java.util.ArrayList;

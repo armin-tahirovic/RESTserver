@@ -1,4 +1,4 @@
-package REST.Server.Friend;
+package CommunicateWithData.Friend;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;

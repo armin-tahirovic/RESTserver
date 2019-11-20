@@ -1,18 +1,17 @@
-package REST.Server.User;
+package CommunicateWithData.Friend;
 
 import java.util.Objects;
 
-public class User {
+public class Friend {
+
     private int id;
     private String brugernavn;
-    private String password;
 
-    public User() {}
+    public Friend(){}
 
-    public User(int id, String brugernavn, String password) {
+    public Friend(int id, String brugernavn) {
         this.id = id;
         this.brugernavn = brugernavn;
-        this.password = password;
     }
 
     public int getId() {
@@ -31,34 +30,24 @@ public class User {
         this.brugernavn = brugernavn;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id &&
-                Objects.equals(brugernavn, user.brugernavn) &&
-                Objects.equals(password, user.password);
+        Friend friend = (Friend) o;
+        return id == friend.id &&
+                Objects.equals(brugernavn, friend.brugernavn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brugernavn, password);
+        return Objects.hash(id, brugernavn);
     }
 
     @Override
     public String toString() {
         return  "id: " + id +
-                "   brugernavn: " + brugernavn +
-                "   password: " + password +
-                "\n";
+                "   brugernavn: '" + brugernavn +
+                '\n';
     }
 }

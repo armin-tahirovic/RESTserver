@@ -1,4 +1,4 @@
-package REST.Server.Friend;
+package CommunicateWithData.Friend;
 
 import java.sql.*;
 import java.util.ArrayList;
