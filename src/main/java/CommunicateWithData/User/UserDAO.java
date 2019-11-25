@@ -26,7 +26,7 @@ public class UserDAO implements IUser {
     public User createUser(User userData) {
         ArrayList<User> userList = callDatabase.getUser();
         int id = userList.size();
-        User user = new User(id, userData.getBrugernavn(),userData.getPassword());
+        User user = new User(userData.getUsername(),userData.getPassword());
         callDatabase.postUser(user);
         return user;
     }
@@ -44,23 +44,23 @@ public class UserDAO implements IUser {
 
 
     @PUT
-    @Path("/changePW/{id}")
+    @Path("/changePW/{username}")
     @Consumes(MediaType.TEXT_PLAIN)
-    public void changePassword(@PathParam("id") int id, String password) {
-        callDatabase.putPassword(id,password);
+    public void changePassword(@PathParam("username") String username, String password) {
+        callDatabase.putPassword(username,password);
     }
 
     @GET
-    @Path("{id}")
+    @Path("{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User read(@PathParam("id") int id)
+    public User read(@PathParam("username") String username)
     {
-        return callDatabase.getOneUser(id);
+        return callDatabase.getOneUser(username);
     }
 
     @DELETE
-    @Path("{id}")
-    public void delete(@PathParam("id") int id) {
-        callDatabase.deleteUser(id);
+    @Path("{username}")
+    public void delete(@PathParam("username") String username) {
+        callDatabase.deleteUser(username);
     }
 }
