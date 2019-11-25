@@ -1,3 +1,4 @@
+/*
 package CommunicateWithData.Friend;
 
 import CommunicateWithData.User.User;
@@ -36,3 +37,4 @@ public class FriendDAO implements IFriend {
         callDbFriend.deleteFriend(owner, username);
     }
 }
+*/
