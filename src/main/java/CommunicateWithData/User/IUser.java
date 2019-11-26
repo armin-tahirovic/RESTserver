@@ -15,11 +15,11 @@ public interface IUser {
     User validereBruger(String brugernavn, String password);*/
 
     @WebMethod
-    void changePassword(int id, String password);
+    void changePassword(String username, String password);
 
     @WebMethod
-    User read(int id);
+    User read(String username);
 
     @WebMethod
-    void delete(int id);
+    void delete(String username);
 }
