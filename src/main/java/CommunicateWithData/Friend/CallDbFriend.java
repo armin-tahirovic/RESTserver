@@ -53,7 +53,6 @@ public class CallDbFriend {
                 String user = rs.getString("brugernavn");
                 return user;
             }
-
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

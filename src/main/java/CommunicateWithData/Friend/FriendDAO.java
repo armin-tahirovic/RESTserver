@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class FriendDAO implements IFriend {
 
     private CallDbFriend callDbFriend = CallDbFriend.CallDB();
-
     public FriendDAO() {}
 
     @GET

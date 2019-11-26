@@ -5,7 +5,6 @@ import java.util.Objects;
 public class Friend {
 
     private String username;
-
     public Friend(){}
 
     public Friend(String username) {
