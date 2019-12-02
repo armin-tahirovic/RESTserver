@@ -10,8 +10,8 @@ import javax.jws.soap.SOAPBinding;
 public interface IFriend {
 
     @WebMethod
-    void addFriend(String owner, String username);
+    String addFriend(String owner, String username);
 
     @WebMethod
-    void delete(String username, String owner);
+    String delete(String owner, String username);
 }

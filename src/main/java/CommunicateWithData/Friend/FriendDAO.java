@@ -21,28 +21,36 @@ public class FriendDAO implements IFriend {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{owner}")
     public ArrayList<Friend> allFriends(@PathParam("owner") String owner) {
-        return callDbFriend.getFriend(owner);
+        return callDbFriend.allFriends(owner);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("friendRequest/{username}")
-    public String sendFriendRequest(@PathParam("username") String username) {
-        return callDbFriend.sendFriendRequest(username);
+    @Path("checkUser/{owner}/{username}")
+    public String checkUser(@PathParam("owner") String owner, @PathParam("username") String username) {
+        return callDbFriend.checkUser(owner, username);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("friendRequest/{owner}/{username}")
+    public String friendRequest(@PathParam("owner") String owner, @PathParam("username") String username) {
+        return callDbFriend.friendRequest(owner, username);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("{owner}")
-    public void addFriend(@PathParam("owner") String owner,String username) {
-        callDbFriend.postFriend(owner, username);
+    public String addFriend(@PathParam("owner") String owner,String username) {
+        return callDbFriend.postFriend(owner, username);
     }
 
     @DELETE
-    @Path("{username}")
-    public void delete(@PathParam("username") String username, String owner) {
-        callDbFriend.deleteFriend(owner, username);
+    @Path("{owner}, {username}")
+    public String delete(@PathParam("owner") String owner, @PathParam("username") String username) {
+         return callDbFriend.delete(owner, username);
     }
 }
-

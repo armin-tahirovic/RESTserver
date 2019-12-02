@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class CallDbFriend {
 
+    private Connection c = null;
+    private Statement s = null;
+
     private CallDbFriend() {
     }
     private static CallDbFriend callDbFriend = null;
@@ -15,16 +18,21 @@ public class CallDbFriend {
         return callDbFriend;
     }
 
-    public ArrayList<Friend> getFriend(String owner) {
-        ArrayList<Friend> friends = new ArrayList<>();
-        Connection c = null;
-        Statement s = null;
-
+    public void makeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
-
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
             s = c.createStatement();
+        }
+        catch (SQLException | ClassNotFoundException e ){
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Friend> allFriends(String owner) {
+        ArrayList<Friend> friends = new ArrayList<>();
+        makeConnection();
+        try {
             ResultSet rs = s.executeQuery("SELECT * FROM \"poc\"."+ owner +";");
 
             while (rs.next()) {
@@ -32,64 +40,61 @@ public class CallDbFriend {
                 friends.add(new Friend(username));
             }
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return friends;
     }
 
-    public String sendFriendRequest(String username) {
-        Connection c = null;
-        Statement s = null;
-
+    public String checkUser(String owner, String username) {
+        makeConnection();
         try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer WHERE username = '"+ username +"';");
 
-            s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger WHERE brugernavn = '"+ username +"';");
-
-            while (rs.next()) {
-                String user = rs.getString("brugernavn");
-                return user;
+            if (rs != null) {
+                s.executeQuery("INSERT INTO \"sep3\"."+ owner +" VALUES ("+ username +", "+ false +", "+ false +", "+ false +")");
+                return "Valid";
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void postFriend(String owner, String username) {
-        Connection c = null;
-        Statement s = null;
-
+    public String friendRequest(String owner, String username) {
+        makeConnection();
         try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres","postgres", "sfp86nbb");
 
-            s = c.createStatement();
-            String createUserSQL = "INSERT INTO \"poc\"."+ owner +" VALUES ( '"+ username +"');";
-            s.executeQuery(createUserSQL);
+            // Skal sætte Request boolean til true
+            ResultSet rs = s.executeQuery("UPDATE \"poc\"."+ owner +" SET request = "+ true +" WHERE username = "+ username +"");
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        return "Done";
     }
 
-    public void deleteFriend(String owner, String username) {
-        Connection c = null;
-        Statement s = null;
-
+    public String postFriend(String owner, String username) {
+        makeConnection();
         try {
-            Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
+            String createUserSQL = "UPDATE \"poc\"."+ owner +" SET friend = "+ true +" WHERE username = "+ username +"";
+            s.executeQuery(createUserSQL);
 
-            s = c.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Friend added";
+    }
+
+    public String delete(String owner, String username) {
+        makeConnection();
+        try {
             String rs = "DELETE FROM \"poc\"."+ owner +" WHERE username = '"+ username +"';";
             s.executeQuery(rs);
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        return "User deleted";
     }
 }
