@@ -72,13 +72,13 @@ public class CallDatabase {
     public User getOneUser(String username) {
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger WHERE username = '"+ username +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger WHERE brugernavn = '"+ username +"';");
 
             while (rs.next()) {
 
-                    String username1 = rs.getString("brugernavn");
+                    String username2 = rs.getString("brugernavn");
                     String password = rs.getString("kode");
-                    User user = new User( username, password);
+                    User user = new User( username2, password);
                     return user;
             }
         } catch (SQLException e) {

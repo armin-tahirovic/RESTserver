@@ -51,7 +51,7 @@ public class UserDAO implements IUser {
     }
 
     @GET
-    @Path("{username}")
+    @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public User read(@PathParam("username") String username)
     {
