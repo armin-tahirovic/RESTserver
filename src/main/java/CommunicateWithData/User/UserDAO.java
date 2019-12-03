@@ -23,10 +23,9 @@ public class UserDAO implements IUser {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User createUser(User userData) {
-        ArrayList<User> userList = callDatabase.getUser();
-        int id = userList.size();
-        User user = new User(userData.getUsername(),userData.getPassword());
+    @Path("/users/{username}/{password}")
+    public User createUser(@FormParam("username") String username, @FormParam("password") String password) {
+        User user = new User(username,password);
         callDatabase.postUser(user);
         return user;
     }
