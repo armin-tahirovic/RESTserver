@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding;
 public interface IUser {
 
     @WebMethod
-    User createUser(User userData);
+    User createUser(String username, String password);
 
 /*    @WebMethod
     User validereBruger(String brugernavn, String password);*/
