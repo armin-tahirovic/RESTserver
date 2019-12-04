@@ -135,8 +135,9 @@ public class CallDbFriend {
     public String delete(String owner, String username) {
         makeConnection();
         try {
-            String rs = "DELETE FROM \"sep3\"."+ owner +" WHERE username = '"+ username +"';";
-            s.executeQuery(rs);
+            System.out.println("Owner " + owner);
+            System.out.println("Username " + username);
+            s.executeQuery("DELETE FROM \"sep3\"."+ owner +" WHERE username = '"+ username +"';");
 
         } catch (SQLException e) {
             e.printStackTrace();
