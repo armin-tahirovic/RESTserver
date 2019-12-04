@@ -21,7 +21,7 @@ public class CallDatabase {
     public void makeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
             s = c.createStatement();
         }
         catch (SQLException | ClassNotFoundException e ){
@@ -32,11 +32,11 @@ public class CallDatabase {
     public ArrayList<User> getUser() {
         makeConnection();
         try{
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".Bruger;");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer;");
             while (rs.next()) {
 
-                String username = rs.getString("brugernavn");
-                String password = rs.getString("kode");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
                 users.add(new User(username,password));
             }
         } catch (SQLException e){
@@ -72,12 +72,12 @@ public class CallDatabase {
     public User getOneUser(String username) {
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\".bruger WHERE username = '"+ username +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer WHERE username = '"+ username +"';");
 
             while (rs.next()) {
 
-                    String username1 = rs.getString("brugernavn");
-                    String password = rs.getString("kode");
+                    String username1 = rs.getString("username");
+                    String password = rs.getString("password");
                     User user = new User( username, password);
                     return user;
             }

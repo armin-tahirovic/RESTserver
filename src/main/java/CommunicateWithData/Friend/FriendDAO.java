@@ -40,11 +40,27 @@ public class FriendDAO implements IFriend {
         return callDbFriend.friendRequest(owner, username);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("getFriendRequest/{owner}")
+    public ArrayList<Friend> getFriendRequest(@PathParam("owner") String owner) {
+        return callDbFriend.getFriendRequest(owner);
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{owner}")
     public String addFriend(@PathParam("owner") String owner,String username) {
+        return callDbFriend.postFriend(owner, username);
+    }
+
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{owner}")
+    public String rejectUser(@PathParam("owner") String owner,String username) {
         return callDbFriend.postFriend(owner, username);
     }
 
