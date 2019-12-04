@@ -48,7 +48,7 @@ public class CallDatabase {
     public User postUser(User userdata) {
         makeConnection();
         try {
-            String createUserSQL = "INSERT INTO \"poc\".Bruger VALUES ('"+ userdata.getUsername() +"', '"+ userdata.getPassword() +"');";
+            String createUserSQL = "INSERT INTO \"sep3\".customer VALUES ('"+ userdata.getUsername() +"', '"+ userdata.getPassword() +"');";
             s.executeQuery(createUserSQL);
 
         } catch (SQLException e) {
@@ -61,7 +61,7 @@ public class CallDatabase {
         makeConnection();
         try {
             System.out.println(username + password);
-            String createUserSQL = "UPDATE \"poc\".Bruger set kode = '"+ password +"' where username = '"+ username +"'";
+            String createUserSQL = "UPDATE \"sep3\".customer set kode = '"+ password +"' where username = '"+ username +"'";
             s.executeQuery(createUserSQL);
 
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public class CallDatabase {
     public void deleteUser(String username) {
         makeConnection();
         try {
-            String rs = "DELETE FROM \"poc\".bruger WHERE username = '"+ username +"';";
+            String rs = "DELETE FROM \"sep3\".customer WHERE username = '"+ username +"';";
             s.executeQuery(rs);
 
         } catch (SQLException e) {
