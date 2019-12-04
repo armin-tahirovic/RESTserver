@@ -21,7 +21,7 @@ public class CallDatabase {
     public void makeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234");
             s = c.createStatement();
         }
         catch (SQLException | ClassNotFoundException e ){
@@ -48,13 +48,15 @@ public class CallDatabase {
     public User postUser(User userdata) {
         makeConnection();
         try {
-            String createUserSQL = "INSERT INTO \"poc\".Bruger VALUES ('"+ userdata.getUsername() +"', '"+ userdata.getPassword() +"');";
+            System.out.println("step 3");
+            String createUserSQL = "INSERT INTO \"sep3\".customer VALUES ('"+ userdata.getUsername() +"', '"+ userdata.getPassword() +"');";
             s.executeQuery(createUserSQL);
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new User( userdata.getUsername(), userdata.getPassword());
+        return new User(userdata.getUsername(), userdata.getPassword());
     }
 
     public void putPassword(String username, String password) {

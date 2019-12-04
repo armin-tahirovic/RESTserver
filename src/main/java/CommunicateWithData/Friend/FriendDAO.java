@@ -56,14 +56,14 @@ public class FriendDAO implements IFriend {
         return callDbFriend.postFriend(owner, username);
     }
 
-    @GET
+    /*@GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{owner}")
     public String rejectUser(@PathParam("owner") String owner,String username) {
         return callDbFriend.postFriend(owner, username);
     }
-
+*/
     @DELETE
     @Path("{owner}, {username}")
     public String delete(@PathParam("owner") String owner, @PathParam("username") String username) {
