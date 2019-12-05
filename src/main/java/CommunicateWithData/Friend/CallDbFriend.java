@@ -52,7 +52,11 @@ public class CallDbFriend {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer WHERE username = '"+ username +"';");
 
             if (rs != null) {
-                s.executeQuery("INSERT INTO \"sep3\"."+ owner +" VALUES ("+ username +", "+ false +", "+ false +", "+ false +")");
+                try {
+                    s.executeQuery("INSERT INTO \"sep3\"."+ username +" VALUES ('"+ owner +"', "+ false +", "+ false +", "+ false +")");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return "Valid";
             }
         } catch (SQLException e) {
@@ -65,22 +69,64 @@ public class CallDbFriend {
         makeConnection();
         try {
 
-            // Skal sætte Request boolean til true
-            ResultSet rs = s.executeQuery("UPDATE \"poc\"."+ owner +" SET request = "+ true +" WHERE username = "+ username +"");
+            String updateRequest = ("UPDATE \"sep3\"."+ username +" SET request = "+ true +" WHERE username = '"+ owner +"'");
+            s.execute(updateRequest);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "Done";
+        return "Friend request send";
+    }
+
+    public ArrayList<Friend> getFriendRequest(String owner) {
+        ArrayList<Friend> friendRequest = new ArrayList<>();
+        makeConnection();
+        try {
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +" WHERE request = "+ true +"");
+
+            while (rs.next()) {
+                String username = rs.getString("username");
+                friendRequest.add(new Friend(username));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return friendRequest;
     }
 
     public String postFriend(String owner, String username) {
         makeConnection();
         try {
-            String createUserSQL = "UPDATE \"poc\"."+ owner +" SET friend = "+ true +" WHERE username = "+ username +"";
-            s.executeQuery(createUserSQL);
+            System.out.println("Igang med at tilfoje ven");
 
-        } catch (SQLException e) {
+            try {
+                s.executeQuery("INSERT INTO \"sep3\"." + username + " VALUES ('" + owner + "', " + true + ", " + false + ", " + false + ")");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Owner: " + owner);
+            System.out.println("Username: " + username);
+
+            try {
+                System.out.println("STEP 1");
+                s.executeQuery("UPDATE \"sep3\"."+ owner +" SET friend = "+ true +" WHERE username = '"+ username +"'");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                System.out.println("STEP 2");
+                s.executeQuery("UPDATE \"sep3\"."+ owner +" SET request = "+ false +" WHERE username = '"+ username +"'");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("Burde have tilfojet ven");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "Friend added";
@@ -89,8 +135,9 @@ public class CallDbFriend {
     public String delete(String owner, String username) {
         makeConnection();
         try {
-            String rs = "DELETE FROM \"poc\"."+ owner +" WHERE username = '"+ username +"';";
-            s.executeQuery(rs);
+            System.out.println("Owner " + owner);
+            System.out.println("Username " + username);
+            s.executeQuery("DELETE FROM \"sep3\"."+ owner +" WHERE username = '"+ username +"';");
 
         } catch (SQLException e) {
             e.printStackTrace();
