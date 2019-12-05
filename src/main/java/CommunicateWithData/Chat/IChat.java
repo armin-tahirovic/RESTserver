@@ -13,7 +13,10 @@ public interface IChat {
     ArrayList<Chat> getChats();
 
     @WebMethod
-    ArrayList<ChatLog> getChatLogs(int chatID);
+    ArrayList<ChatLog> getChatLogs(String chatID);
+
+    @WebMethod
+    String getChatIDByMembers(String count, String owner, String username);
 
     @WebMethod
     int addChat(String chatName);

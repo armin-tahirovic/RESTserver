@@ -9,6 +9,8 @@ public class Chat {
         this.chatName = chatName;
     }
 
+
+
     public int getChatID() {
         return chatID;
     }

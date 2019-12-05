@@ -6,13 +6,13 @@ public class ChatLog {
     private int chatID;
     String username;
     String message;
-    Date time;
 
-    public ChatLog(int chatID, String username, String message, Date time) {
+
+    public ChatLog(int chatID, String username, String message) {
         this.chatID = chatID;
         this.username = username;
         this.message = message;
-        this.time = time;
+
     }
 
     public int getChatID() {
@@ -39,11 +39,4 @@ public class ChatLog {
         this.message = message;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
 }
