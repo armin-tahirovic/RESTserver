@@ -33,10 +33,10 @@ public class CallDbFriend {
         ArrayList<Friend> friends = new ArrayList<>();
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"poc\"."+ owner +";");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +" WHERE friend = true;");
 
             while (rs.next()) {
-                String username = rs.getString("brugernavn");
+                String username = rs.getString("username");
                 friends.add(new Friend(username));
             }
 
