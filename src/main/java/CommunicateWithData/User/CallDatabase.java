@@ -45,19 +45,20 @@ public class CallDatabase {
         return users;
     }
 
-    public User postUser(User userdata) {
+    public User postUser(User user) {
+        System.out.println(user);
         makeConnection();
         try {
-            String createUserSQL = "INSERT INTO \"sep3\".customer VALUES ('"+ userdata.getUsername() +"', '"+ userdata.getPassword() +"');";
-            System.out.println("step 3");
-            String createUserSQL = "INSERT INTO \"sep3\".customer VALUES ('"+ userdata.getUsername() +"', '"+ userdata.getPassword() +"');";
+
+
+            String createUserSQL = "INSERT INTO \"sep3\".customer VALUES ('"+ user.getUsername() +"', '"+ user.getPassword() +"');";
             s.executeQuery(createUserSQL);
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new User(userdata.getUsername(), userdata.getPassword());
+        return new User(user.getUsername(), user.getPassword());
     }
 
     public void putPassword(String username, String password) {
@@ -94,6 +95,17 @@ public class CallDatabase {
         makeConnection();
         try {
             String rs = "DELETE FROM \"sep3\".customer WHERE username = '"+ username +"';";
+            s.executeQuery(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteGrupMember (String username, int chatID) {
+        makeConnection();
+        try {
+            String rs = "DELETE FROM \"sep3\".groupchat WHERE username = '"+ username +"' AND ID = '"+ chatID +"';";
             s.executeQuery(rs);
 
         } catch (SQLException e) {

@@ -3,7 +3,10 @@ package CommunicateWithData.User;
 import javax.jws.WebService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 
 @Path("/users")
@@ -15,19 +18,23 @@ public class UserDAO implements IUser {
     public UserDAO() {}
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public ArrayList<User> allUsers() {
         return callDatabase.getUser();
     }
 
-    /*@POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/users")
-    public User createUser( User user) {
+    @POST
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
+    @Path("createuser")
+    public void createUser( User user) {
         callDatabase.postUser(user);
-        return user;
-    }*/
+        System.out.println(user);
+
+        }
+
+
+
 
 /*    @GET
     @Path("/validate/{id}")
@@ -50,7 +57,7 @@ public class UserDAO implements IUser {
 
     @GET
     @Path("{username}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
     public User read(@PathParam("username") String username)
     {
         return callDatabase.getOneUser(username);
@@ -60,5 +67,10 @@ public class UserDAO implements IUser {
     @Path("{username}")
     public void delete(@PathParam("username") String username) {
         callDatabase.deleteUser(username);
+    }
+
+    @DELETE
+    @Path("{username}{chatID}")
+    public void deleteGroupMember(@PathParam("username") String username, int chatID) { callDatabase.deleteGrupMember(username,chatID);
     }
 }
