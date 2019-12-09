@@ -63,7 +63,7 @@ public class FriendDAO implements IFriend {
     }
 
     @DELETE
-    @Path("{owner}, {username}")
+    @Path("deleteUser/{owner}/{username}")
     public String delete(@PathParam("owner") String owner, @PathParam("username") String username) {
          return callDbFriend.delete(owner, username);
     }
