@@ -22,6 +22,6 @@ public interface IChat {
     int addChat(String chatName);
 
     @WebMethod
-    void addChatLog(int id, String username, String message);
+    String addChatLog(String chatID, String username, String message);
 
 }

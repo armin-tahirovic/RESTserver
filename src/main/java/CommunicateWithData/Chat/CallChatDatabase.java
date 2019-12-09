@@ -90,15 +90,19 @@ public class CallChatDatabase {
         return 0;
     }
 
-    public void addChatLog(int chatID, String username, String message) {
-
+    public String addChatLog(String chatID, String username, String message) {
+        System.out.println("Adding chat log");
         makeConnection();
+        String result = "Log Not Added";
 
         try {
-            s.executeQuery("INSERT INTO \"sep3\".log VALUES (" + chatID + ", "+ username +", "+ message +")");
+            s.execute("INSERT INTO \"sep3\".log VALUES (" + chatID + ", "+ username +", "+ message +", now());");
+            result = "Log Added";
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return result;
 
     }
 
