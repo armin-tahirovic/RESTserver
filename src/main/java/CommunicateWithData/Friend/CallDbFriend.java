@@ -100,8 +100,8 @@ public class CallDbFriend {
 
                 s.executeUpdate("INSERT INTO \"sep3\"." + username + " VALUES ('" + owner + "', " + true + ", " + false + ", " + false + ")");
 
-                System.out.println("Owner: " + owner);
-                System.out.println("Username: " + username);
+            System.out.println("Owner: " + owner);
+            System.out.println("Username: " + username);
 
                 System.out.println("STEP 1");
                 s.executeUpdate("UPDATE \"sep3\"."+ owner +" SET friend = "+ true +" WHERE username = '"+ username +"'");

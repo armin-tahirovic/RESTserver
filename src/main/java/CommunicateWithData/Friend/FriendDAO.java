@@ -19,7 +19,7 @@ public class FriendDAO implements IFriend {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{owner}")
+    @Path("/{owner}")
     public ArrayList<Friend> allFriends(@PathParam("owner") String owner) {
         return callDbFriend.allFriends(owner);
     }
