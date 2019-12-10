@@ -21,7 +21,7 @@ public class CallDbFriend {
     public void makeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
             s = c.createStatement();
         }
         catch (SQLException | ClassNotFoundException e ){
@@ -33,7 +33,7 @@ public class CallDbFriend {
         ArrayList<Friend> friends = new ArrayList<>();
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +" WHERE friend = true;");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +" WHERE friend = "+ true +";");
 
             while (rs.next()) {
                 String username = rs.getString("username");
@@ -46,43 +46,48 @@ public class CallDbFriend {
         return friends;
     }
 
-    public String checkUser(String owner, String username) {
+    public String checkUser(String username) {
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer WHERE username = '"+ username +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer;");
 
-            if (rs != null) {
-                try {
-                    s.executeQuery("INSERT INTO \"sep3\"."+ username +" VALUES ('"+ owner +"', "+ false +", "+ false +", "+ false +")");
-                } catch (SQLException e) {
-                    e.printStackTrace();
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))) {
+                    return "Valid";
                 }
-                return "Valid";
             }
-        } catch (SQLException e) {
+        }
+         catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return "User doesn't exist";
     }
 
     public String friendRequest(String owner, String username) {
         makeConnection();
         try {
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +";");
 
-            String updateRequest = ("UPDATE \"sep3\"."+ username +" SET request = "+ true +" WHERE username = '"+ owner +"'");
-            s.execute(updateRequest);
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))) {
+                    return "Request not send. Already friends";
+                }
+            }
+
+            s.executeUpdate("INSERT INTO \"sep3\"." + username + " VALUES ('" + owner + "', " + false + ", " + false + ", " + false + ");");
+            s.execute("UPDATE \"sep3\"."+ username +" SET request = "+ true +" WHERE username = '"+ owner +"';");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "Friend request send";
+        return "You request have been send";
     }
 
     public ArrayList<Friend> getFriendRequest(String owner) {
         ArrayList<Friend> friendRequest = new ArrayList<>();
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +" WHERE request = "+ true +"");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +" WHERE request = "+ true +";");
 
             while (rs.next()) {
                 String username = rs.getString("username");
@@ -97,51 +102,51 @@ public class CallDbFriend {
     public String postFriend(String owner, String username) {
         makeConnection();
         try {
-            System.out.println("Igang med at tilfoje ven");
+            // Tilføjer senderen til modtagerens tabel
+            s.executeUpdate("INSERT INTO \"sep3\"." + username + " VALUES ('" + owner + "', " + true + ", " + false + ", " + false + ");");
 
-            try {
-                s.executeQuery("INSERT INTO \"sep3\"." + username + " VALUES ('" + owner + "', " + true + ", " + false + ", " + false + ")");
+            // Opdatere senderens tabel
+            s.executeUpdate("UPDATE \"sep3\"."+ owner +" SET friend = " + true + " WHERE username = '" + username + "';");
+            s.executeUpdate("UPDATE \"sep3\"."+ owner +" SET request = " + false + " WHERE username = '" + username + "';");
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("Owner: " + owner);
-            System.out.println("Username: " + username);
-
-            try {
-                System.out.println("STEP 1");
-                s.executeQuery("UPDATE \"sep3\"."+ owner +" SET friend = "+ true +" WHERE username = '"+ username +"'");
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                System.out.println("STEP 2");
-                s.executeQuery("UPDATE \"sep3\"."+ owner +" SET request = "+ false +" WHERE username = '"+ username +"'");
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("Burde have tilfojet ven");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "Friend added";
     }
 
-    public String delete(String owner, String username) {
+    public String reject(String owner, String username) {
         makeConnection();
         try {
-            System.out.println("Owner " + owner);
-            System.out.println("Username " + username);
-            s.executeQuery("DELETE FROM \"sep3\"."+ owner +" WHERE username = '"+ username +"';");
+
+            String sql = "DELETE FROM \"sep3\"." + owner + " WHERE username = '"+ username +"'; ";
+            s.executeUpdate(sql);
+
+            System.out.println(sql);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "User deleted";
+        return "User rejected";
+    }
+
+    public String delete(String owner, String username) {
+        makeConnection();
+        try {
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\"."+ owner +";");
+
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))) {
+                    s.executeUpdate("DELETE FROM \"sep3\"." + owner + " WHERE username = '" + username + "'; ");
+                    s.executeUpdate("DELETE FROM \"sep3\"." + username + " WHERE username = '" + owner + "'; ");
+
+                    return "User deleted";
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "You are not friends with " + username;
     }
 }
