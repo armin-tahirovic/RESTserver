@@ -22,7 +22,7 @@ public class CallChatDatabase {
     public void makeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
             s = c.createStatement();
         }
         catch (SQLException | ClassNotFoundException e ){
@@ -101,9 +101,7 @@ public class CallChatDatabase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return result;
-
     }
 
 
