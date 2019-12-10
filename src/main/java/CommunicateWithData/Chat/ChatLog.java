@@ -15,6 +15,9 @@ public class ChatLog {
 
     }
 
+    public ChatLog() {
+    }
+
     public int getChatID() {
         return chatID;
     }
