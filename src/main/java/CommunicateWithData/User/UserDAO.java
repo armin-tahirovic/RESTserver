@@ -20,15 +20,15 @@ public class UserDAO implements IUser {
         return callDatabase.getUser();
     }
 
-    /*@POST
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/users/")
+    @Path("createUser")
     public User createUser( String username,String password) {
         User user = new User(username,password);
         callDatabase.postUser(user);
         return user;
-    }*/
+    }
 
 /*    @GET
     @Path("/validate/{id}")

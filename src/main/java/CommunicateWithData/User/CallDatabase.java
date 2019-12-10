@@ -101,15 +101,5 @@ public class CallDatabase {
             e.printStackTrace();
         }
     }
-
-    public void deleteGrupMember (String username, int chatID) {
-        makeConnection();
-        try {
-            String rs = "DELETE FROM \"sep3\".groupchat WHERE username = '"+ username +"' AND ID = '"+ chatID +"';";
-            s.executeQuery(rs);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
+
