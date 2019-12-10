@@ -41,9 +41,10 @@ public class ChatDAO implements IChat {
     }
 
     @POST
-    @Path("/{chatID}/{username}/{message}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addChatLog(@PathParam("chatID") int chatID, @PathParam("username")String username, @PathParam("message")String message) {
-        chatDatabase.addChatLog(chatID, username, message);
+    @Produces(MediaType.APPLICATION_JSON)
+    public void addChatLog(ChatLog log) {
+        System.out.println("Adding Log");
+       chatDatabase.addChatLog(log.getChatID(),log.getUsername(),log.getMessage());
     }
 }

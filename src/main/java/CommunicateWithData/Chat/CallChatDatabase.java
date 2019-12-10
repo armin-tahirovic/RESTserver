@@ -91,14 +91,18 @@ public class CallChatDatabase {
     }
 
     public void addChatLog(int chatID, String username, String message) {
-
+        System.out.println("Adding chat log");
         makeConnection();
 
+
         try {
-            s.executeQuery("INSERT INTO \"sep3\".log VALUES (" + chatID + ", "+ username +", "+ message +")");
+            s.executeUpdate("INSERT INTO \"sep3\".log VALUES (" + chatID + ", '"+ username +"', '"+ message +"', now());");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
 
     }
 

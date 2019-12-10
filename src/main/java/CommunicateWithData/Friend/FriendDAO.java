@@ -27,9 +27,9 @@ public class FriendDAO implements IFriend {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("checkUser/{owner}/{username}")
-    public String checkUser(@PathParam("owner") String owner, @PathParam("username") String username) {
-        return callDbFriend.checkUser(owner, username);
+    @Path("checkUser/{username}")
+    public String checkUser(@PathParam("username") String username) {
+        return callDbFriend.checkUser(username);
     }
 
     @GET
@@ -59,11 +59,11 @@ public class FriendDAO implements IFriend {
     @DELETE
     @Path("rejectUser/{owner}/{username}")
     public String rejectUser(@PathParam("owner") String owner, @PathParam("username") String username) {
-        return callDbFriend.delete(owner, username);
+        return callDbFriend.reject(owner, username);
     }
 
     @DELETE
-    @Path("{owner}, {username}")
+    @Path("deleteUser/{owner}/{username}")
     public String delete(@PathParam("owner") String owner, @PathParam("username") String username) {
          return callDbFriend.delete(owner, username);
     }
