@@ -18,6 +18,20 @@ public class ChatDAO implements IChat {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("GroupChat/{owner}")
+    public ArrayList<GroupChat> getGroupChat(@PathParam("owner") String owner){
+        return chatDatabase.getGroupChat(owner);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("GroupMembers/{id}")
+    public ArrayList<GroupChat> getGroupChat(@PathParam("id") int id){
+        return chatDatabase.getGroupMembers(id);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{count}/{owner}/{username}")
     public String getChatIDByMembers(@PathParam("count") String count, @PathParam("owner")String owner, @PathParam("username")String username){
 
