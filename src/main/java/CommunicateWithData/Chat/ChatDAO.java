@@ -61,4 +61,18 @@ public class ChatDAO implements IChat {
         System.out.println("Adding Log");
        chatDatabase.addChatLog(log.getChatID(),log.getUsername(),log.getMessage());
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("AddMember/{id}/{username}")
+    public String addMember(@PathParam("id") int id, @PathParam("username") String username) {
+        return chatDatabase.addMember(id, username);
+    }
+
+    @DELETE
+    @Path("RemoveMember/{id}/{username}")
+    public String removeMember(@PathParam("id") int id, @PathParam("username") String username) {
+        return chatDatabase.removeMember(id, username);
+    }
 }

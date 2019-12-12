@@ -132,16 +132,51 @@ public class CallChatDatabase {
         System.out.println("Adding chat log");
         makeConnection();
 
-
         try {
             s.executeUpdate("INSERT INTO \"sep3\".log VALUES (" + chatID + ", '"+ username +"', '"+ message +"', now());");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    public String addMember(int id, String username) {
+        System.out.println("Adding member");
+        makeConnection();
 
+        try {
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE id = '"+ id +"';");
 
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))) {
+                    return username + " already member of chat";
+                }
+            }
+            s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + id + ", '"+ username +"', '"+ false +"';");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return username + " added to chat";
+    }
+
+    public String removeMember(int id, String username) {
+        makeConnection();
+        try {
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE id = '"+ id +"';");
+
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))) {
+                    s.executeUpdate("DELETE FROM \"sep3\".chatmembers WHERE id = '"+ id +"' AND username = '" + username + "'; ");
+
+                    return username + " removed from chat";
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "You are not able to remove " + username;
     }
 
 
