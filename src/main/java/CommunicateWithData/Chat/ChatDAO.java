@@ -18,6 +18,20 @@ public class ChatDAO implements IChat {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("GroupChat/{owner}")
+    public ArrayList<GroupChat> getGroupChat(@PathParam("owner") String owner){
+        return chatDatabase.getGroupChat(owner);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("GroupMembers/{id}")
+    public ArrayList<GroupChat> getGroupChat(@PathParam("id") int id){
+        return chatDatabase.getGroupMembers(id);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{count}/{owner}/{username}")
     public String getChatIDByMembers(@PathParam("count") String count, @PathParam("owner")String owner, @PathParam("username")String username){
 
@@ -46,5 +60,19 @@ public class ChatDAO implements IChat {
     public void addChatLog(ChatLog log) {
         System.out.println("Adding Log");
        chatDatabase.addChatLog(log.getChatID(),log.getUsername(),log.getMessage());
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("AddMember/{id}/{username}")
+    public String addMember(@PathParam("id") int id, @PathParam("username") String username) {
+        return chatDatabase.addMember(id, username);
+    }
+
+    @DELETE
+    @Path("RemoveMember/{id}/{username}")
+    public String removeMember(@PathParam("id") int id, @PathParam("username") String username) {
+        return chatDatabase.removeMember(id, username);
     }
 }

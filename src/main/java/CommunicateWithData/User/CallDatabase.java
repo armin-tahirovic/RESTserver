@@ -79,8 +79,6 @@ public class CallDatabase {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer WHERE username = '"+ username +"';");
 
             while (rs.next()) {
-
-                    String username1 = rs.getString("username");
                     String password = rs.getString("password");
                     User user = new User( username, password);
                     return user;
