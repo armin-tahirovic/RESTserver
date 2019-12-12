@@ -37,7 +37,7 @@ public class CallChatDatabase {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chat;");
 
             while (rs.next()) {
-                int id = rs.getInt("ID");
+                int id = rs.getInt("chatID");
                 String chatName = rs.getString("chatName");
                 allChats.add(new Chat(id, chatName));
 
@@ -56,7 +56,7 @@ public class CallChatDatabase {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE username = '"+ owner +"';");
 
             while (rs.next()) {
-                int id = rs.getInt("ID");
+                int id = rs.getInt("chatid");
                 String username = rs.getString("username");
                 boolean admin = rs.getBoolean("admin");
                 allChats.add(new GroupChat(id,username,admin));
@@ -72,10 +72,10 @@ public class CallChatDatabase {
         ArrayList<GroupChat> allChats = new ArrayList<>();
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE id = '"+ id +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ id +"';");
 
             while (rs.next()) {
-                int member = rs.getInt("ID");
+                int member = rs.getInt("chatid");
                 String username = rs.getString("username");
                 boolean admin = rs.getBoolean("admin");
                 allChats.add(new GroupChat(member,username,admin));
@@ -94,21 +94,31 @@ public class CallChatDatabase {
             System.out.println("count: " + count);
             System.out.println("owner: " + owner);
             System.out.println("username: " + username);
-            ResultSet resultSet = s.executeQuery("select one.ID from \"sep3\".chatmembers one  right join \"sep3\".chatmembers two on one.ID = two.ID where  one.ID in (select ID from \"sep3\".chatmembers group by ID having  count(username) = " + count + " ) AND one.username = '" + owner + "' and two.username = '" + username + "';");
-
-            while (resultSet.next()) {
-                System.out.println("chatid is: " + resultSet.getInt("ID"));
-                int chatIDint = resultSet.getInt("ID");
-                chatID = String.valueOf(chatIDint);
-
-            }
-
-
-
+            ResultSet resultSet = s.executeQuery("select one.chatid from \"sep3\".chatmembers one  right join \"sep3\".chatmembers two on one.chatid = two.chatid where  one.chatid in (select chatid from \"sep3\".chatmembers group by chatid having  count(username) = " + count + " ) AND one.username = '" + owner + "' and two.username = '" + username + "';");
+                while (resultSet.next()) {
+                    System.out.println("chatid is: " + resultSet.getInt("chatid"));
+                    int chatIDint = resultSet.getInt("chatid");
+                    chatID = String.valueOf(chatIDint);
+                    return chatID;
+                }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("result set is empty");
+        int newChatID = addChat("new chat");
+        System.out.println(" NEW Chat ID is: " + newChatID);
+        addChatMember(newChatID, owner, true);
+        addChatMember(newChatID, username, false);
+        chatID = String.valueOf(newChatID);
+        System.out.println("The final chatID: " + chatID);
         return chatID;
+    }
+    public void addChatMember(int chatID, String username, boolean admin){
+        try {
+            s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + chatID + ", '"+ username +"', "+ admin +");");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int addChat(String chatname) {
@@ -116,11 +126,12 @@ public class CallChatDatabase {
         makeConnection();
 
         try {
+            ResultSet resultSet = s.executeQuery("INSERT INTO \"sep3\".chat(chatName) VALUES ('" + chatname + "') RETURNING chatid;");
+            while (resultSet.next()) {
+                long countLong = resultSet.getLong("chatid");
+                return (int) countLong;
+            }
 
-            ResultSet resultSet = s.executeQuery("INSERT INTO \"sep3\".chat(chatName) VALUES (" + chatname + ") RETURNING ID;");
-
-            long countLong = resultSet.getLong(1);
-            return (int) countLong;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,7 +195,7 @@ public class CallChatDatabase {
         ArrayList<ChatLog> allChatLogs = new ArrayList<>();
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".log where ID = '" + chatID +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".log where chatID = '" + chatID +"';");
 
             while (rs.next()) {
                 int id = rs.getInt("chatID");
