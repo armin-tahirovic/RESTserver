@@ -68,11 +68,11 @@ public class CallChatDatabase {
         return allChats;
     }
 
-    public ArrayList<GroupChat> getGroupMembers(int id){
+    public ArrayList<GroupChat> getGroupMembers(int chatID){
         ArrayList<GroupChat> allChats = new ArrayList<>();
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ id +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"';");
 
             while (rs.next()) {
                 int member = rs.getInt("chatid");
@@ -151,19 +151,19 @@ public class CallChatDatabase {
         }
     }
 
-    public String addMember(int id, String username) {
+    public String addMember(int chatID, String username, boolean admin) {
         System.out.println("Adding member");
         makeConnection();
 
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE id = '"+ id +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"';");
 
             while (rs.next()) {
                 if (username.equals(rs.getString("username"))) {
                     return username + " already member of chat";
                 }
             }
-            s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + id + ", '"+ username +"', '"+ false +"';");
+            s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + chatID + ", '"+ username +"', '"+ admin +"';");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -171,14 +171,14 @@ public class CallChatDatabase {
         return username + " added to chat";
     }
 
-    public String removeMember(int id, String username) {
+    public String removeMember(int chatID, String username) {
         makeConnection();
         try {
-            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE id = '"+ id +"';");
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"';");
 
             while (rs.next()) {
                 if (username.equals(rs.getString("username"))) {
-                    s.executeUpdate("DELETE FROM \"sep3\".chatmembers WHERE id = '"+ id +"' AND username = '" + username + "'; ");
+                    s.executeUpdate("DELETE FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"' AND username = '" + username + "'; ");
 
                     return username + " removed from chat";
                 }
