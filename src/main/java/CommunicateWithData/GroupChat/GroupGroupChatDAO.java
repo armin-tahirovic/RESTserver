@@ -15,6 +15,9 @@ public class GroupGroupChatDAO implements IGroupChat {
     public ArrayList<GroupChat> getChats(){return chatDatabase.getGroupChats();
     }
 
+
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{count}/{owner}/{username}")

@@ -11,8 +11,10 @@ import java.util.ArrayList;
 public class UserDAO implements IUser {
 
     private CallDatabase callDatabase = CallDatabase.CallDB();
+    private String username;
 
-    public UserDAO() {}
+    public UserDAO() {
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -23,11 +25,11 @@ public class UserDAO implements IUser {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("createUser")
-    public User createUser( String username,String password) {
-        User user = new User(username,password);
+    public void createUser(User user) {
+        System.out.println("rest");
         callDatabase.postUser(user);
-        return user;
+
+
     }
 
 /*    @GET
@@ -46,8 +48,9 @@ public class UserDAO implements IUser {
     @Path("/changePW/{username}")
     @Consumes(MediaType.TEXT_PLAIN)
     public void changePassword(@PathParam("username") String username, String password) {
-        callDatabase.putPassword(username,password);
+        callDatabase.putPassword(username, password);
     }
+
 
     @GET
     @Path("/{username}")

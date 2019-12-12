@@ -8,8 +8,8 @@ import javax.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL)
 public interface IUser {
 
-    /*@WebMethod
-    User createUser(String username, String password);*/
+    @WebMethod
+    void createUser(User user);
 
 /*    @WebMethod
     User validereBruger(String brugernavn, String password);*/
@@ -17,7 +17,7 @@ public interface IUser {
     @WebMethod
     void changePassword(String username, String password);
 
-    @WebMethod
+   @WebMethod
     User read(String username);
 
     @WebMethod

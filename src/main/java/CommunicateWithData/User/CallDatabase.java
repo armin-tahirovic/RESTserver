@@ -21,7 +21,7 @@ public class CallDatabase {
     public void makeConnection(){
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "sfp86nbb");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234");
             s = c.createStatement();
         }
         catch (SQLException | ClassNotFoundException e ){
