@@ -11,13 +11,10 @@ public interface IUser {
     @WebMethod
     void createUser(User user);
 
-/*    @WebMethod
-    User validereBruger(String brugernavn, String password);*/
-
     @WebMethod
     void changePassword(String username, String password);
 
-   @WebMethod
+    @WebMethod
     User read(String username);
 
     @WebMethod
