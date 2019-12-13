@@ -69,7 +69,7 @@ public class CallChatDatabase {
     }
 
     public ArrayList<GroupChat> getGroupMembers(int chatID){
-        ArrayList<GroupChat> allChats = new ArrayList<>();
+        ArrayList<GroupChat> allMembers = new ArrayList<>();
         makeConnection();
         try {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"';");
@@ -78,13 +78,13 @@ public class CallChatDatabase {
                 int member = rs.getInt("chatid");
                 String username = rs.getString("username");
                 boolean admin = rs.getBoolean("admin");
-                allChats.add(new GroupChat(member,username,admin));
+                allMembers.add(new GroupChat(member,username,admin));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return allChats;
+        return allMembers;
     }
 
     public String getChatIDByMembers(String count, String owner, String username){
@@ -113,6 +113,7 @@ public class CallChatDatabase {
         System.out.println("The final chatID: " + chatID);
         return chatID;
     }
+
     public void addChatMember(int chatID, String username, boolean admin){
         try {
             s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + chatID + ", '"+ username +"', "+ admin +");");
@@ -163,7 +164,11 @@ public class CallChatDatabase {
                     return username + " already member of chat";
                 }
             }
-            s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + chatID + ", '"+ username +"', '"+ admin +"';");
+
+            System.out.println("ID " + chatID);
+            System.out.println("Username " + username);
+            System.out.println("Admin " + admin);
+            s.executeUpdate("INSERT INTO \"sep3\".chatmembers VALUES (" + chatID + ", '"+ username +"', '"+ admin +"');");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -171,14 +176,14 @@ public class CallChatDatabase {
         return username + " added to chat";
     }
 
-    public String removeMember(int chatID, String username) {
+    public String removeMember(int chatID, String username, boolean admin) {
         makeConnection();
         try {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"';");
 
             while (rs.next()) {
                 if (username.equals(rs.getString("username"))) {
-                    s.executeUpdate("DELETE FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"' AND username = '" + username + "'; ");
+                    s.executeUpdate("DELETE FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"' AND username = '" + username + "' AND admin = '"+ false +"'");
 
                     return username + " removed from chat";
                 }
@@ -189,7 +194,6 @@ public class CallChatDatabase {
         }
         return "You are not able to remove " + username;
     }
-
 
     public ArrayList<ChatLog> getChatLogs(int chatID) {
         ArrayList<ChatLog> allChatLogs = new ArrayList<>();

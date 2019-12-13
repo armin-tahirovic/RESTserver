@@ -26,7 +26,7 @@ public class ChatDAO implements IChat {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("GroupMembers/{id}")
-    public ArrayList<GroupChat> getGroupChat(@PathParam("id") int id){
+    public ArrayList<GroupChat> getGroupMembers(@PathParam("id") int id){
         return chatDatabase.getGroupMembers(id);
     }
 
@@ -50,13 +50,14 @@ public class ChatDAO implements IChat {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public int addChat(String chatName) {
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("CreateChat/{chatname}")
+    public int addChat(@PathParam("chatname") String chatName) {
         return chatDatabase.addChat(chatName);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public void addChatLog(ChatLog log) {
         System.out.println("Adding Log");
        chatDatabase.addChatLog(log.getChatID(),log.getUsername(),log.getMessage());
@@ -65,14 +66,14 @@ public class ChatDAO implements IChat {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("AddMember/{id}/{username}")
-    public String addMember(@PathParam("id") int id, @PathParam("username") String username) {
-        return chatDatabase.addMember(id, username);
+    @Path("AddMember/{id}/{username}/{admin}")
+    public String addMember(@PathParam("id") int id, @PathParam("username") String username, @PathParam("admin") boolean admin) {
+        return chatDatabase.addMember(id, username, admin);
     }
 
     @DELETE
-    @Path("RemoveMember/{id}/{username}")
-    public String removeMember(@PathParam("id") int id, @PathParam("username") String username) {
-        return chatDatabase.removeMember(id, username);
+    @Path("RemoveMember/{id}/{username}/{admin}")
+    public String removeMember(@PathParam("id") int id, @PathParam("username") String username, @PathParam("admin") boolean admin) {
+        return chatDatabase.removeMember(id, username, admin);
     }
 }
