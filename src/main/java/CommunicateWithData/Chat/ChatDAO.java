@@ -73,7 +73,7 @@ public class ChatDAO implements IChat {
 
     @DELETE
     @Path("RemoveMember/{id}/{username}/{admin}")
-    public String removeMember(@PathParam("id") int id, @PathParam("username") String username, @PathParam("admin") boolean admin) {
-        return chatDatabase.removeMember(id, username, admin);
+    public String removeMember(@PathParam("id") int id, @PathParam("username") String username) {
+        return chatDatabase.removeMember(id, username);
     }
 }

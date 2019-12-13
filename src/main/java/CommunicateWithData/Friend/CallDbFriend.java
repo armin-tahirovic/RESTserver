@@ -122,8 +122,6 @@ public class CallDbFriend {
             String sql = "DELETE FROM \"sep3\"." + owner + " WHERE username = '"+ username +"'; ";
             s.executeUpdate(sql);
 
-            System.out.println(sql);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

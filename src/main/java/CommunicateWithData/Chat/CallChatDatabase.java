@@ -176,7 +176,7 @@ public class CallChatDatabase {
         return username + " added to chat";
     }
 
-    public String removeMember(int chatID, String username, boolean admin) {
+    public String removeMember(int chatID, String username) {
         makeConnection();
         try {
             ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".chatmembers WHERE chatid = '"+ chatID +"';");
