@@ -25,9 +25,8 @@ public class UserDAO implements IUser {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void createUser(User user) {
-        System.out.println("rest");
-        callDatabase.postUser(user);
+    public String createUser(User user) {
+        return callDatabase.postUser(user);
     }
 
     @PUT

@@ -45,20 +45,27 @@ public class CallDatabase {
         return users;
     }
 
-    public User postUser(User user) {
-        System.out.println(user);
+    public String postUser(User user) {
         makeConnection();
         try {
+            ResultSet rs = s.executeQuery("SELECT * FROM \"sep3\".customer;");
+            String username = user.getUsername();
+            String password = user.getPassword();
 
+            while (rs.next()) {
+                if (username.equals(rs.getString("username"))) {
+                    return "Username already exist";
+                }
+            }
 
-            String createUserSQL = "INSERT INTO \"sep3\".customer VALUES ('"+ user.getUsername() +"', '"+ user.getPassword() +"');";
-            s.executeQuery(createUserSQL);
+            s.executeUpdate("INSERT INTO \"sep3\".customer VALUES ('" + username + "', '" + password + "');");
+            s.executeUpdate("CREATE TABLE \"sep3\"."+ username +" (username varchar(30), friend bool, request bool, blocked bool)");
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new User(user.getUsername(), user.getPassword());
+        return "User created";
     }
 
     public void putPassword(String username, String password) {
